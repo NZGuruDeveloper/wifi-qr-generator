@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
 import Tab from "react-bootstrap/Tab";
@@ -10,8 +10,21 @@ import Nav from "react-bootstrap/Nav";
 import QRCode from "react-qr-code";
 import Wifi from "./components/Wifi";
 
+import { Button, Form } from "react-bootstrap";
+
+import { useReactToPrint } from "react-to-print";
+
 export default function Home() {
   const [qrText, setQrText] = useState("");
+
+  const contentToPrint = useRef(null);
+  const handlePrint = useReactToPrint({
+    documentTitle: "Print This Document",
+    onBeforePrint: () => console.log("before printing..."),
+    onAfterPrint: () => console.log("after printing..."),
+    removeAfterPrint: true,
+  });
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
       <div className="">
@@ -20,6 +33,7 @@ export default function Home() {
           {qrText.length > 0 && (
             <div>
               <QRCode
+                ref={contentToPrint}
                 value={qrText}
                 size={256}
                 style={{
@@ -30,6 +44,9 @@ export default function Home() {
                 }}
                 viewBox={`0 0 256 256`}
               />
+              <div>
+                <Button variant="primary" type="submit" style={{ marginBottom: "30px" }} onClick={handlePrint}>Print this out!</Button>
+              </div>
               <div>{/*qrText*/}</div>
             </div>
           )}
