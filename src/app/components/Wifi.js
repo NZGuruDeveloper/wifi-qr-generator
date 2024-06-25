@@ -8,16 +8,11 @@ function Wifi ({ setQrText }) {
   const [hidden, setHidden] = useState(false);
 
 
-  function handleSubmit (event) {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-
+  function handleSubmit (e) {
+    e.preventDefault();
+    
     setQrText(`WIFI:T:${authentication};S:${name};${authentication !== 'nopass' ? `P:${password};` : ''}H:${hidden};`);
-    setValidated(true);
-
+   
     return false;
   }
 
@@ -25,7 +20,7 @@ function Wifi ({ setQrText }) {
     <Form onSubmit={handleSubmit}>
       <Form.Group className="mb-3">
         <Form.Label>Authentication type</Form.Label>
-        <Form.Select value={authentication} aria-label="Authentication" onChange={(e) => setAuthentication(e.target.value)} required>
+        <Form.Select value={authentication} aria-label="Authentication" onChange={(e) => setAuthentication(e.target.value)} required defaultChecked={"WPA"} >
           <option value="nopass">No Password</option>
           <option value="WEP">WEP</option>
           <option value="WPA">WPA</option>

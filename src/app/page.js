@@ -17,14 +17,22 @@ export default function Home() {
       <div className="">
         <Container className="mx-auto">
           <h1 className="my-4">Qr Generator</h1>
-          {qrText.length > 0 && <div><QRCode value={qrText} 
-          size={256}
-          style={{ height: "auto", maxWidth: "100%", width: "100%", marginBottom: "30px" }}
-          viewBox={`0 0 256 256`}
-          /> 
-          <div>{qrText}</div>
-          </div>
-          }
+          {qrText.length > 0 && (
+            <div>
+              <QRCode
+                value={qrText}
+                size={256}
+                style={{
+                  height: "auto",
+                  maxWidth: "100%",
+                  width: "100%",
+                  marginBottom: "30px",
+                }}
+                viewBox={`0 0 256 256`}
+              />
+              <div>{/*qrText*/}</div>
+            </div>
+          )}
           <Tab.Container defaultActiveKey="text">
             <Row>
               <Col sm={3}>
