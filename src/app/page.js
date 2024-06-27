@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
 import Tab from "react-bootstrap/Tab";
@@ -20,18 +20,30 @@ export default function Home() {
   const contentToPrint = useRef(null);
   const handlePrint = useReactToPrint({
     documentTitle: "Print This Document",
+
     onBeforePrint: () => console.log("before printing..."),
     onAfterPrint: () => console.log("after printing..."),
     removeAfterPrint: true,
   });
 
+  const reactToPrintTrigger = useCallback(() => {
+    // NOTE: could just as easily return <SomeComponent />. Do NOT pass an `onClick` prop
+    // to the root node of the returned component as it will be overwritten.
+
+    // Bad: the `onClick` here will be overwritten by `react-to-print`
+    // return <button onClick={() => alert('This will not work')}>Print this out!</button>;
+
+    // Good
+    return <button>Print using a Functional Component</button>;
+  }, []);
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
-      <div className="">
+      <div className="dark:font-white">
         <Container className="mx-auto">
           <h1 className="my-4">Qr Generator</h1>
           {qrText.length > 0 && (
-            <div>
+            <div >
               <QRCode
                 ref={contentToPrint}
                 value={qrText}
@@ -45,7 +57,7 @@ export default function Home() {
                 viewBox={`0 0 256 256`}
               />
               <div>
-                <Button variant="primary" type="submit" style={{ marginBottom: "30px" }} onClick={handlePrint}>Print this out!</Button>
+                <Button variant="primary" type="submit" style={{ marginBottom: "30px" }} onClick={reactToPrintTrigger}>Print this out!</Button>
               </div>
               <div>{/*qrText*/}</div>
             </div>
